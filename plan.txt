@@ -1,0 +1,21 @@
+Book Database
+
+Main page: login, with link to register new user
+Register: enter new user and password. Store usernames and passwords in database. (Poor security -- to be improved)
+New Book: enter book information
+Edit Book: edit existing book, or add missing information
+List Books: list of books read, ordered by rating. Separate lists for fiction and non-fiction. Includes just title and rating. Could add other information? Add jQuery, to allow for reordering in response to user. 
+Statistics: default to current year, allow year (or other range of dates) to be chosen.
+
+Book information:
+-title
+-rating
+-author
+-number of pages
+-year of publication
+-year read
+
+Statistics:
+-average rating
+-total pages read
+-average year of publication
