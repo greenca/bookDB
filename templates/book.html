@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<style type="text/css">
+     body {
+         font-family: sans-serif; width: 800px; margin: 0 auto; padding: 10px;
+     }
+     .error {
+         color: red;
+     }
+     .label {
+         display: block; font-size: 20px;
+     }
+     input[type=text] {
+         width: 400px; font-size: 20px; padding: 2px;
+     }
+     textarea {
+         width: 400px; height: 200px; font-size: 17px; font-family: monospace;
+     }
+     input[type=submit] {
+         font-size: 24px;
+     }
+     hr {
+         margin: 20px auto;
+     }
+</style>
+
+
+<head>
+    <title>BookDB</title>
+</head>
+
+<body>
+    <h3>Enter a new book</h3>	
+    <hr><br>
+    <form enctype="multipart/form-data" method="post">
+        <table>
+            <tr>
+                <td class="label">
+                    Title
+                </td>
+                <td>
+                    <input type="text" name="title" value="${title}">
+                </td>
+            </tr>
+            <tr>
+            	<td class="label">
+						Type            	
+            	</td>
+            	<td>	
+            		<input type="radio" name="type" value="fiction" ${fic}> Fiction <br>
+            		<input type="radio" name="type" value="nonfiction" ${nonfic}> Non-fiction
+            	</td>	
+            </tr>
+            <tr>
+                <td class="label">
+                    Rating
+                </td>
+                <td>
+                    <input type="text" name="rating" value="${rating}">
+                </td>
+            </tr> 
+            <tr>
+            	<td class="label">
+            		Author
+            	</td>
+            	<td>
+            		<input type="text" name="author" value="${author}">
+            	</td>
+            </tr>
+            <tr>
+            	<td class="label">
+            		Number of pages
+            	</td>
+            	<td>
+            		<input type="text" name="numpages" value="${numpages}">
+            	</td>
+            </tr>
+            <tr>
+            	<td class="label">
+            		Year of publication
+            	</td>
+            	<td>
+            		<input type="text" name="yearpub" value="${yearpub}">
+            	</td>
+            </tr>
+            <tr>
+            	<td class="label">
+            		Year read
+            	</td>
+            	<td>
+            		<input type="text" name="yearread" value="${yearread}">
+            	</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="error">
+                    ${error}
+                </td>
+            </tr> 
+        </table>      
+        
+        <br>
+        <br>
+        <input type="submit">
+    </form>
+    
+    
+</body>
+
+</html>

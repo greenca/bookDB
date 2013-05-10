@@ -1,7 +1,7 @@
 from twisted.web import resource, server
 from mako.template import Template
 import cgi
-import psycopg2
+from database import Database
 
 class NewUser(resource.Resource):
 	isLeaf = False
@@ -17,18 +17,39 @@ class NewUser(resource.Resource):
 		user = request.args['user'][0]
 		password = request.args['password'][0]
 		password2 = request.args['password2'][0]
-		if user == '':
-			return self.write_form('', 'Please enter a username')		
-		if password == '':
-			return self.write_form(user, 'Please enter a password')
-		if password != password2:
-			return self.write_form(user, 'Passwords do not match')
+		error = self.checkUser(user)
+		if error:
+			return self.write_form('', error)
+		error = self.checkPassword(password, password2)
+		if error:		
+			return self.write_form(user, error)
+			
+		db = Database()
+		db.addUser(user, password)
 		
-		request.redirect('/')
-		request.finish()
-		return server.NOT_DONE_YET
+		request.addCookie('user', user)		
+		mytemplate = Template(filename='templates/start.html')
+		return str(mytemplate.render())
 		
 		
 	def write_form(self, user='', error=''):
 		mytemplate = Template(filename='templates/newuser.html')
 		return str(mytemplate.render(user=user, error=error))
+		
+	def checkUser(self, user):
+		error = ''
+		if user == '':
+			error = 'Please enter a username'
+		db = Database()		
+		res = db.getUser(user)
+		if res:
+			error = 'Username is taken'
+		return error
+		
+	def checkPassword(self, pw, pw2):
+		error = ''
+		if pw == '':
+			error = 'Please enter a password'
+		elif pw != pw2:
+			error = 'Passwords do not match'
+		return error
