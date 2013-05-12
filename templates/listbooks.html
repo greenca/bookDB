@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<style type="text/css">
+     body {
+         font-family: sans-serif; width: 800px; margin: 0 auto; padding: 10px;
+     }
+     .error {
+         color: red;
+     }
+     .label {
+         display: block; font-size: 20px;
+     }
+     input[type=text] {
+         width: 400px; font-size: 20px; padding: 2px;
+     }
+     textarea {
+         width: 400px; height: 200px; font-size: 17px; font-family: monospace;
+     }
+     input[type=submit] {
+         font-size: 24px;
+     }
+     hr {
+         margin: 20px auto;
+     }
+</style>
+
+
+<head>
+    <title>Show Recipe</title>
+</head>
+
+<body>
+
+	 <h3>Fiction</h3>	
+    <table border="1">
+    	<tr>
+			<td> <b>Title</b> </td>
+			<td> <b>Rating</b> </td>
+    	</tr>
+    	% for book in fic:
+			${displaybook(book)}
+		% endfor  
+    </table> 
+     
+    
+    <br><hr>
+    <h3>Non-Fiction</h3>	
+    <table border="1">
+    	<tr>
+			<td> <b>Title</b> </td>
+			<td> <b>Rating</b> </td>
+    	</tr>
+    	% for book in nonfic:
+			${displaybook(book)}
+		% endfor  
+    </table>  
+    
+</body>
+
+</html>
+
+<%def name="displaybook(book)">
+    <tr>
+    	<td> <a href='/books/${book[0]}'>${book[1]}</a> </td>
+ 		<td> ${book[2]} </td> 
+    	<td> <a href='/delete/${book[0]}'>Delete</a> </td>
+    </tr>
+</%def>

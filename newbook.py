@@ -1,4 +1,4 @@
-from twisted.web import resource
+from twisted.web import resource, server
 from mako.template import Template
 import cgi
 from database import Database
@@ -36,9 +36,15 @@ class NewBook(resource.Resource):
 			return self.write_form(title, booktype, rating, author, numpages, yearpub, yearread, error)		
 				
 		db = Database()
-		db.addBook(user, title, booktype, rating, author, numpages, yearpub, yearread)
+		idnum = db.addBook(user, title, booktype, rating, author, numpages, yearpub, yearread)
 		
-		return 'User: ' + user + '<br>Title: ' + title + '<br>Type: ' + booktype + '<br>Rating: ' + rating + '<br>Author: ' + author + '<br>Number of Pages: ' + numpages + '<br>Year of Publication: ' + yearpub + '<br>Year Read: ' + yearread
+		#request.redirect('books/' + str(idnum))
+		#request.finish()
+		#return server.NOT_DONE_YET
+		return 'books/' + str(idnum)
+		#request.redirect('/')
+		#request.finish()
+		#return server.NOT_DONE_YET
 		
 	def write_form(self, title='', booktype='', rating='', author='', numpages='', yearpub='', yearread=str(date.today().year), error=''):
 		fic = ''

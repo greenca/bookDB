@@ -33,11 +33,30 @@ class Database():
 		return res == password
 		
 	def addBook(self, username, title, booktype, rating, author, numpages, yearpub, yearread):
+		if not rating:
+			rating = 0
+		if not numpages:
+			numpages = 0
+		if not yearpub:
+			yearpub = 0
+		if not yearread:
+			yearread = 0
 		self.connect()
 		self.cur.execute("INSERT INTO books (username, title, type, rating, author, numpages, yearpub, yearread) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);", (username, title, booktype, rating, author, numpages, yearpub, yearread))
+		self.cur.execute("SELECT currval('books_id_seq');")
+		res = self.cur.fetchone()[0]
 		self.disconnect()
+		return res
 		
 	def modBook(self, idnum, username, title, booktype, rating, author, numpages, yearpub, yearread):
+		if not rating:
+			rating = 0
+		if not numpages:
+			numpages = 0
+		if not yearpub:
+			yearpub = 0
+		if not yearread:
+			yearread = 0
 		self.connect()
 		self.cur.execute("UPDATE books SET title = %s, type = %s, rating = %s, author = %s, numpages = %s, yearpub = %s, yearread = %s WHERE id = %s AND username = %s;", (title, booktype, rating, author, numpages, yearpub, yearread, idnum, username))
 		self.disconnect()
@@ -49,11 +68,10 @@ class Database():
 		self.disconnect()
 		return res
 		
-	
-
-
-
-#cur.execute("INSERT INTO recipeinfo (title, meal, season, ingredients, time, cuisine, source, rating) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);", (title,meal,season,mainingredient,preptime,cuisinetype,cookbook,rating))
-#   cur.execute("SELECT currval('recipeinfo_id_seq');")
-#   recipeid = cur.fetchone()[0]
-#   cur.execute("INSERT INTO recipenotes (id, notes, filetype, filename) VALUES (%s, %s, %s, %s);", (recipeid,recipenotes,filetype,filename))
+	def listBooks(self, username, booktype):
+		self.connect()
+		self.cur.execute("SELECT id, title, rating FROM books WHERE username = '%s' AND type = '%s' ORDER BY rating DESC;" % (username, booktype))
+		res = self.cur.fetchall()
+		self.disconnect()
+		return res
+		

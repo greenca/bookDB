@@ -1,4 +1,4 @@
-from twisted.web import resource
+from twisted.web import resource, server
 from mako.template import Template
 import cgi
 from database import Database
@@ -54,7 +54,9 @@ class BookPage(resource.Resource):
 		db = Database()
 		db.modBook(self.idnum, user, title, booktype, rating, author, numpages, yearpub, yearread)
 		
-		return 'User: ' + user + '<br>Title: ' + title + '<br>Type: ' + booktype + '<br>Rating: ' + rating + '<br>Author: ' + author + '<br>Number of Pages: ' + numpages + '<br>Year of Publication: ' + yearpub + '<br>Year Read: ' + yearread
+		request.redirect('/books/' + self.idnum)
+		request.finish()
+		return server.NOT_DONE_YET
 		
 	def getBookInfo(self, username):
 		if self.idnum.isdigit():

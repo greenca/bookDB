@@ -32,16 +32,14 @@
 </head>
 
 <body>
-    <h3>Enter the book information</h3>	
-    <hr><br>
-    <form enctype="multipart/form-data" method="post">
+    <br>
         <table>
             <tr>
                 <td class="label">
                     Title
                 </td>
                 <td>
-                    <input type="text" name="title" value="${title}">
+                    ${title}
                 </td>
             </tr>
             <tr>
@@ -49,8 +47,7 @@
 						Type            	
             	</td>
             	<td>	
-            		<input type="radio" name="type" value="fiction" ${fic}> Fiction <br>
-            		<input type="radio" name="type" value="nonfiction" ${nonfic}> Non-fiction
+            		${booktype}
             	</td>	
             </tr>
             <tr>
@@ -58,7 +55,7 @@
                     Rating
                 </td>
                 <td>
-                    <input type="text" name="rating" value="${rating}">
+                    ${rating}
                 </td>
             </tr> 
             <tr>
@@ -66,7 +63,7 @@
             		Author
             	</td>
             	<td>
-            		<input type="text" name="author" value="${author}">
+            		${author}
             	</td>
             </tr>
             <tr>
@@ -74,7 +71,7 @@
             		Number of pages
             	</td>
             	<td>
-            		<input type="text" name="numpages" value="${numpages}">
+            		${numpages}
             	</td>
             </tr>
             <tr>
@@ -82,7 +79,7 @@
             		Year of publication
             	</td>
             	<td>
-            		<input type="text" name="yearpub" value="${yearpub}">
+            		${yearpub}
             	</td>
             </tr>
             <tr>
@@ -90,21 +87,20 @@
             		Year read
             	</td>
             	<td>
-            		<input type="text" name="yearread" value="${yearread}">
+            		${yearread}
             	</td>
             </tr>
-            <tr>
-                <td></td>
-                <td class="error">
-                    ${error}
-                </td>
-            </tr> 
         </table>      
         
         <br>
+        <a href="../edit/${idnum}">Edit</a>
+        
+        <br><br><hr><br>
+        <a href="../books">See all books</a>
+	     <br>
+  		  <a href="../newbook">Enter new book</a>
         <br>
-        <input type="submit">
-    </form>
+    	  <a href="../search">Search books</a>
     
     
 </body>
