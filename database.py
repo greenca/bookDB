@@ -16,7 +16,7 @@ class Database():
 	def getUser(self, username):
 		self.connect()
 		self.cur.execute("SELECT username FROM users WHERE username = '%s';" % username)
-		res = self.cur.fetchone()[0]
+		res = self.cur.fetchone()
 		self.disconnect()
 		return res
 		

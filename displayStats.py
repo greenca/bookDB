@@ -13,7 +13,7 @@ class StatsHandler(resource.Resource):
 	def render_GET(self, request):
 		username = request.getCookie('user')
 		if request.args:
-			return self.write_form(username, firstyear = request.args[firstyear][0], lastyear = request.args[lastyear][0])
+			return self.write_form(username, firstyear = request.args['firstyear'][0], lastyear = request.args['lastyear'][0])
 		return self.write_form(username)
 		
 	def write_form(self, username, firstyear=str(date.today().year), lastyear=str(date.today().year)):
