@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<style type="text/css">
+     body {
+         font-family: sans-serif; width: 800px; margin: 0 auto; padding: 10px;
+     }
+     .error {
+         color: red;
+     }
+     .label {
+         display: block; font-size: 20px;
+     }
+     input[type=text] {
+         width: 400px; font-size: 20px; padding: 2px;
+     }
+     textarea {
+         width: 400px; height: 200px; font-size: 17px; font-family: monospace;
+     }
+     input[type=submit] {
+         font-size: 24px;
+     }
+     hr {
+         margin: 20px auto;
+     }
+</style>
+
+
+<head>
+    <title>Statistics</title>
+</head>
+
+<body>
+    <h3>Statistics for Books Read ${firstyear} to ${lastyear}</h3>	
+		<table>
+		<tr>
+		<td class="label">Average Rating</td>
+		<td>${avgRating}</td>
+		</tr>
+		<tr>
+		<td class="label">Total Pages</td>
+		<td>${totalPages}</td>
+		</tr>
+		<tr>
+		<td class="label">Average Year of Publication</td>
+		<td>${avgPubYear}</td>
+		</tr>
+		</table>
+
+    <hr><br>
+    <form enctype="multipart/form-data" method="get">
+        <table>
+            <tr>
+                <td class="label">
+                    First Year
+                </td>
+                <td>
+                    <input type="text" name="firstyear" value="${firstyear}">
+                </td>
+            </tr>
+            <tr>
+            	<td class="label">
+						Last Year            	
+            	</td>
+            	<td>	
+						  <input type="text" name="lastyear" value="${lastyear}">
+            	</td>	
+            </tr>
+        </table>      
+        
+        <br>
+        <br>
+        <input type="submit">
+    </form>
+    
+    
+</body>
+
+</html>

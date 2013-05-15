@@ -28,11 +28,12 @@
 
 
 <head>
-    <title>BookDB</title>
+    <title>Delete Book</title>
 </head>
 
 <body>
-    <br>
+	 <h3>Delete ${title}? <a href='./confirm/${idnum}'>Yes</a> <a href='../books/${idnum}'>No</a> </h3>
+    <hr><br>
         <table>
             <tr>
                 <td class="label">
@@ -92,19 +93,6 @@
             </tr>
         </table>      
         
-        <br>
-        <a href="../edit/${idnum}">Edit</a>
-        <br>
-        <a href="../delete/${idnum}">Delete</a>
-        
-        <br><br><hr><br>
-        <a href="../books">See all books</a>
-	     <br>
-  		  <a href="../newbook">Enter new book</a>
-        <br>
-    	  <a href="../search">Search books</a>
-    
-    
 </body>
 
 </html>

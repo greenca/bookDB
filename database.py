@@ -75,3 +75,55 @@ class Database():
 		self.disconnect()
 		return res
 		
+	def deleteBook(self, idnum, username):
+		self.connect()
+		self.cur.execute("DELETE FROM books WHERE id = %s and username = '%s';" % (idnum, username))
+		self.disconnect()
+		
+	def searchBooks(self, username, criteria):
+		self.connect()
+		sql_req = "SELECT id, title, type, rating, author, numpages, yearpub, yearread FROM books WHERE username = '%s'" % username
+		for c in criteria:
+			if criteria[c][0]:
+				sql_req += " AND " + c
+				if c == 'title' or c == 'type' or c == 'author':
+					sql_req += " ILIKE '%" + criteria[c][0] + "%'"
+				elif criteria[c][0].count('-') == 1:
+					rangevals = criteria[c][0].split('-')
+					if rangevals[0]:				
+						sql_req += " >= " + rangevals[0]
+						if rangevals[1]:
+							sql_req += " AND " + c + " <= " + rangevals[1]
+					elif rangevals[1]:
+						sql_req += " <= " + rangevals[1]
+					else:
+						ssql_req += " = " + criteria[c][0]
+				else:
+					sql_req += " = " + criteria[c][0] 
+		sql_req += " ORDER BY rating DESC;"
+		self.cur.execute(sql_req)
+		res = self.cur.fetchall()
+		self.disconnect()
+		return res
+		
+	def getAvgRating(self, username, firstyear, lastyear):
+		self.connect()
+		self.cur.execute("SELECT avg(rating) FROM books WHERE username = '%s' AND yearread >= %s AND yearread <= %s;" % (username, firstyear, lastyear))
+		res = self.cur.fetchone()[0]
+		self.disconnect()
+		return res
+		
+	def getTotalPages(self, username, firstyear, lastyear):
+		self.connect()
+		self.cur.execute("SELECT sum(numpages) FROM books WHERE username = '%s' AND yearread >= %s AND yearread <= %s;" % (username, firstyear, lastyear))
+		res = self.cur.fetchone()[0]
+		self.disconnect()
+		return res
+		
+	def getAvgPubYear(self, username, firstyear, lastyear):
+		self.connect()
+		self.cur.execute("SELECT avg(yearpub) FROM books WHERE username = '%s' AND yearread >= %s AND yearread <= %s;" % (username, firstyear, lastyear))
+		res = self.cur.fetchone()[0]
+		self.disconnect()
+		return res
+	
