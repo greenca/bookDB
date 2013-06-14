@@ -36,11 +36,12 @@
 	 <h3>Fiction</h3>	
     <table border="1">
     	<tr>
+    		<td> <b>Rank</b> </td>
 			<td> <b>Title</b> </td>
 			<td> <b>Rating</b> </td>
     	</tr>
-    	% for book in fic:
-			${displaybook(book)}
+    	% for index, book in enumerate(fic):
+			${displaybook(index, book)}
 		% endfor  
     </table> 
      
@@ -49,11 +50,12 @@
     <h3>Non-Fiction</h3>	
     <table border="1">
     	<tr>
+    		<td> <b>Rank</b> </td>
 			<td> <b>Title</b> </td>
 			<td> <b>Rating</b> </td>
     	</tr>
-    	% for book in nonfic:
-			${displaybook(book)}
+    	% for index, book in enumerate(nonfic):
+			${displaybook(index, book)}
 		% endfor  
     </table>  
     
@@ -61,8 +63,9 @@
 
 </html>
 
-<%def name="displaybook(book)">
+<%def name="displaybook(index, book)">
     <tr>
+      <td> ${index +1} </td>
     	<td> <a href='/books/${book[0]}'>${book[1]}</a> </td>
  		<td> ${book[2]} </td> 
     	<td> <a href='/delete/${book[0]}'>Delete</a> </td>
