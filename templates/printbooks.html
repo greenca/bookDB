@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<style type="text/css">
+     body {
+         font-family: sans-serif; width: 800px; margin: 0 auto; padding: 10px;
+     }
+     .error {
+         color: red;
+     }
+     .label {
+         display: block; font-size: 20px;
+     }
+     input[type=text] {
+         width: 400px; font-size: 20px; padding: 2px;
+     }
+     textarea {
+         width: 400px; height: 200px; font-size: 17px; font-family: monospace;
+     }
+     input[type=submit] {
+         font-size: 24px;
+     }
+     hr {
+         margin: 20px auto;
+     }
+</style>
+
+
+<head>
+    <title>List Books</title>
+</head>
+
+<body>
+
+	 <h3>Fiction</h3>	
+    <table border="1">
+    	<tr>
+    		<td> <b>Rank</b> </td>
+			<td> <b>Title</b> </td>
+			<td> <b>Rating</b> </td>
+    	</tr>
+    	% for index, book in enumerate(fic):
+			${displaybook(index, book)}
+		% endfor  
+    </table> 
+     
+    
+    <br><hr>
+    <h3>Non-Fiction</h3>	
+    <table border="1">
+    	<tr>
+    		<td> <b>Rank</b> </td>
+			<td> <b>Title</b> </td>
+			<td> <b>Rating</b> </td>
+    	</tr>
+    	% for index, book in enumerate(nonfic):
+			${displaybook(index, book)}
+		% endfor  
+    </table>  
+    
+</body>
+
+</html>
+
+<%def name="displaybook(index, book)">
+    <tr>
+      <td> ${index +1} </td>
+    	<td> ${book[1]} </td>
+ 		<td> ${book[2]} </td> 
+    </tr>
+</%def>
