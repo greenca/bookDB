@@ -1,4 +1,7 @@
 import psycopg2
+import hashlib
+import os
+import binascii
 
 class Database():
 	
@@ -22,15 +25,19 @@ class Database():
 		
 	def addUser(self, username, password):
 		self.connect()
-		self.cur.execute("INSERT INTO users (username, password) VALUES (%s, %s);", (username, password))
+                salt = binascii.hexlify(os.urandom(32))
+                hashed_pw = hashlib.sha512(salt+password).hexdigest()
+		self.cur.execute("INSERT INTO users (username, password, salt) VALUES (%s, %s, %s);", (username, hashed_pw, salt))
 		self.disconnect()
 		
 	def checkPassword(self, username, password):
 		self.connect()
-		self.cur.execute("SELECT password FROM users WHERE username = '%s';" % username)
-		res = self.cur.fetchone()[0]
+		self.cur.execute("SELECT password, salt FROM users WHERE username = '%s';" % username)
+		res = self.cur.fetchone()
 		self.disconnect()
-		return res == password
+                pw = res[0]
+                salt = res[1]
+		return pw == hashlib.sha512(salt+password).hexdigest()
 		
 	def addBook(self, username, title, booktype, rating, author, numpages, yearpub, yearread):
 		if not rating:
