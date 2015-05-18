@@ -1,17 +1,8 @@
-from twisted.web import resource, server
+from twisted.web.resource import Resource
 from mako.template import Template
 from database import Database
-from newuser import NewUser
-from newbook import NewBook
-from editbook import EditHandler
-from showbook import ShowBook
-from printbook import PrintBook
-from deletebook import DeleteBook
-from searchbooks import SearchHandler
-from displayStats import StatsHandler
 
-
-class Main(resource.Resource):
+class Login(Resource):
 	isLeaf = False
 	def getChild(self, name, request):
 		return self
@@ -57,13 +48,3 @@ class Main(resource.Resource):
 def html_escape(s):
 	import cgi
 	return cgi.escape(s)    
-
-resource = Main()
-resource.putChild('register', NewUser())
-resource.putChild('newbook', NewBook())
-resource.putChild('edit', EditHandler())
-resource.putChild('books', ShowBook())
-resource.putChild('print', PrintBook())
-resource.putChild('delete', DeleteBook())
-resource.putChild('search', SearchHandler())
-resource.putChild('stats', StatsHandler())
