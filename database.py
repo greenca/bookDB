@@ -1,4 +1,4 @@
-import psycopg2
+import sqlite3
 import hashlib
 import os
 import binascii
@@ -8,7 +8,7 @@ class Database():
 	dbname = 'books'
 			
 	def connect(self):	
-		self.conn = psycopg2.connect(database=self.dbname)
+                self.conn = sqlite3.connect(self.dbname)
 		self.cur = self.conn.cursor()
    
 	def disconnect(self):
