@@ -18,7 +18,7 @@ class Database():
 
 	def getUser(self, username):
 		self.connect()
-		self.cur.execute("SELECT username FROM users WHERE username = '%s';" % username)
+		self.cur.execute("SELECT username FROM users WHERE username = ?", (username,))
 		res = self.cur.fetchone()
 		self.disconnect()
 		return res
@@ -27,12 +27,12 @@ class Database():
 		self.connect()
                 salt = binascii.hexlify(os.urandom(32))
                 hashed_pw = hashlib.sha512(salt+password).hexdigest()
-		self.cur.execute("INSERT INTO users (username, password, salt) VALUES (%s, %s, %s);", (username, hashed_pw, salt))
+		self.cur.execute("INSERT INTO users (username, password, salt) VALUES (?, ?, ?)", (username, hashed_pw, salt))
 		self.disconnect()
 		
 	def checkPassword(self, username, password):
 		self.connect()
-		self.cur.execute("SELECT password, salt FROM users WHERE username = '%s';" % username)
+		self.cur.execute("SELECT password, salt FROM users WHERE username = ?", (username,))
 		res = self.cur.fetchone()
 		self.disconnect()
                 pw = res[0]
@@ -49,9 +49,8 @@ class Database():
 		if not yearread:
 			yearread = 0
 		self.connect()
-		self.cur.execute("INSERT INTO books (username, title, type, rating, author, numpages, yearpub, yearread) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);", (username, title, booktype, rating, author, numpages, yearpub, yearread))
-		self.cur.execute("SELECT currval('books_id_seq');")
-		res = self.cur.fetchone()[0]
+		self.cur.execute("INSERT INTO books (username, title, type, rating, author, numpages, yearpub, yearread) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (username, title, booktype, rating, author, numpages, yearpub, yearread))
+                res = self.cur.lastrowid
 		self.disconnect()
 		return res
 		
@@ -65,31 +64,31 @@ class Database():
 		if not yearread:
 			yearread = 0
 		self.connect()
-		self.cur.execute("UPDATE books SET title = %s, type = %s, rating = %s, author = %s, numpages = %s, yearpub = %s, yearread = %s WHERE id = %s AND username = %s;", (title, booktype, rating, author, numpages, yearpub, yearread, idnum, username))
+		self.cur.execute("UPDATE books SET title = ?, type = ?, rating = ?, author = ?, numpages = ?, yearpub = ?, yearread = ? WHERE id = ? AND username = ?", (title, booktype, rating, author, numpages, yearpub, yearread, idnum, username))
 		self.disconnect()
 		
 	def getBookInfo(self, idnum, username):
 		self.connect()
-		self.cur.execute("SELECT * FROM books WHERE id = %s AND username = '%s';" % (idnum, username))
+		self.cur.execute("SELECT * FROM books WHERE id = ? AND username = ?", (idnum, username))
 		res = self.cur.fetchone()
 		self.disconnect()
 		return res
 		
 	def listBooks(self, username, booktype):
 		self.connect()
-		self.cur.execute("SELECT id, title, rating FROM books WHERE username = '%s' AND type = '%s' ORDER BY rating DESC;" % (username, booktype))
+		self.cur.execute("SELECT id, title, rating FROM books WHERE username = ? AND type = ? ORDER BY rating DESC", (username, booktype))
 		res = self.cur.fetchall()
 		self.disconnect()
 		return res
 		
 	def deleteBook(self, idnum, username):
 		self.connect()
-		self.cur.execute("DELETE FROM books WHERE id = %s and username = '%s';" % (idnum, username))
+		self.cur.execute("DELETE FROM books WHERE id = ? and username = ?", (idnum, username))
 		self.disconnect()
 		
 	def searchBooks(self, username, criteria):
 		self.connect()
-		sql_req = "SELECT id, title, type, rating, author, numpages, yearpub, yearread FROM books WHERE username = '%s'" % username
+		sql_req = "SELECT id, title, type, rating, author, numpages, yearpub, yearread FROM books WHERE username = ?"
 		for c in criteria:
 			if criteria[c][0]:
 				sql_req += " AND " + c
@@ -108,28 +107,28 @@ class Database():
 				else:
 					sql_req += " = " + criteria[c][0] 
 		sql_req += " ORDER BY rating DESC;"
-		self.cur.execute(sql_req)
+		self.cur.execute(sql_req, (username,))
 		res = self.cur.fetchall()
 		self.disconnect()
 		return res
 		
 	def getAvgRating(self, username, firstyear, lastyear):
 		self.connect()
-		self.cur.execute("SELECT avg(rating) FROM books WHERE username = '%s' AND yearread >= %s AND yearread <= %s;" % (username, firstyear, lastyear))
+		self.cur.execute("SELECT avg(rating) FROM books WHERE username = ? AND yearread >= ? AND yearread <= ?", (username, firstyear, lastyear))
 		res = self.cur.fetchone()[0]
 		self.disconnect()
 		return res
 		
 	def getTotalPages(self, username, firstyear, lastyear):
 		self.connect()
-		self.cur.execute("SELECT sum(numpages) FROM books WHERE username = '%s' AND yearread >= %s AND yearread <= %s;" % (username, firstyear, lastyear))
+		self.cur.execute("SELECT sum(numpages) FROM books WHERE username = ? AND yearread >= ? AND yearread <= ?", (username, firstyear, lastyear))
 		res = self.cur.fetchone()[0]
 		self.disconnect()
 		return res
 		
 	def getAvgPubYear(self, username, firstyear, lastyear):
 		self.connect()
-		self.cur.execute("SELECT avg(yearpub) FROM books WHERE username = '%s' AND yearread >= %s AND yearread <= %s;" % (username, firstyear, lastyear))
+		self.cur.execute("SELECT avg(yearpub) FROM books WHERE username = ? AND yearread >= ? AND yearread <= ?", (username, firstyear, lastyear))
 		res = self.cur.fetchone()[0]
 		self.disconnect()
 		return res
